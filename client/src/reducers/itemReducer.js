@@ -13,6 +13,17 @@ const itemReducer = (state = initState, action) => {
       return {
         ...state,
       };
+    case "DELETE_ITEM":
+      return {
+        ...state,
+        items: state.items.filter((item) => item.id !== action.id),
+      };
+
+    case "ADD_ITEM":
+      return {
+        ...state,
+        items: [...state.items, { id: uuidv4(), name: action.item }],
+      };
     default:
       return state;
   }
