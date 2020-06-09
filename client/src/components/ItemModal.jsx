@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
   Modal,
@@ -15,8 +16,13 @@ const ItemModal = () => {
   const [name, setName] = useState("");
   const [modal, ToggleModal] = useState(false);
   const submit = (e) => {
+    const newItem = {
+      name: name,
+    };
     e.preventDefault();
-    dispatch({ type: "ADD_ITEM", item: name });
+    axios
+      .post("/api/items", newItem)
+      .then((res) => dispatch({ type: "ADD_ITEM", data: res.data }));
     ToggleModal(!modal);
   };
   return (
