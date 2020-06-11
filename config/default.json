@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://SingingApple:20112001honey@cluster0-ls2zk.mongodb.net/items?retryWrites=true&w=majority",
+  "jwtSecret": "sl_myJwtSecret"
+}

@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../../routes/api/middleware/auth");
 //Item Model
 const Item = require("../../models/Item");
-
 //@route GET api/items
 //@desc GET all items
 //@access public
@@ -28,7 +28,7 @@ router.get("/:id", (req, res) => {
 //@desc Create a POST
 //@access Public
 
-router.post("/", (req, res) => {
+router.post("/", auth, (req, res) => {
   const newItem = new Item({
     name: req.body.name,
   });

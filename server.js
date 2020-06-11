@@ -1,25 +1,32 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const config = require("./config/default.json");
 const items = require("./routes/api/items");
 const app = express();
 const path = require("path");
-
+const auth = require("./routes/api/auth");
+const users = require("./routes/api/users");
 //BodyParser Middleware
-app.use(bodyParser.json());
+app.use(express.json());
 
 //DB config
-const db = require("./config/keys").mongoURI;
+const db = config.mongoURI;
 
 //Mongo Connect
 mongoose
-  .connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
+  .connect(db, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    createIndexes: true,
+  })
   .then(() => {
     console.log("Mongo Connected....");
   })
   .catch((err) => console.log(err));
 
 app.use("/api/items", items);
+app.use("/api/users", users);
+app.use("/api/auth", auth);
 
 if (process.env.NODE_ENV === "production") {
   //Set Static Folder
