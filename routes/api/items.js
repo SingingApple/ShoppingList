@@ -39,7 +39,7 @@ router.post("/", auth, (req, res) => {
 //@desc delete a POST
 //@access Public
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", auth, (req, res) => {
   Item.findByIdAndDelete(req.params.id)
     .then(() => res.json({ success: true }))
     .catch((err) => res.status(404).json({ success: false }));
