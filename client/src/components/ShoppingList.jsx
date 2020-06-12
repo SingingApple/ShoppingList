@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { returnErrors } from "../actions/errorActions";
 import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useDispatch } from "react-redux";
@@ -12,6 +13,21 @@ const ShoppingList = () => {
   //     dispatch({ type: "GET_ITEMS", data: res.data });
   //   });
   // });
+  const token = useSelector((state) => state.auth.token);
+  const tokenConfig = (token) => {
+    dispatch({ type: "USER_LOADING" });
+    //GET TOKEN FROM LOCAL STORAGE
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    if (token) {
+      config.headers["x-auth-token"] = token;
+    }
+    return config;
+  };
   useEffect(() => {
     Promise.resolve(dispatch({ type: "ITEMS_LOADING" })).then(() => {
       axios.get("/api/items").then((res) => {
@@ -33,19 +49,30 @@ const ShoppingList = () => {
             return (
               <CSSTransition key={item._id} timeout={500} classNames="fade">
                 <ListGroupItem>
-                  <Button
-                    className="remove-btn"
-                    color="danger"
-                    size="sm"
-                    onClick={() => {
-                      axios.delete(`/api/items/${item._id}`).then((res) => {
-                        console.log(res);
-                        dispatch({ type: "DELETE_ITEM", id: item._id });
-                      });
-                    }}
-                  >
-                    &times;
-                  </Button>
+                  {token ? (
+                    <Button
+                      className="remove-btn"
+                      color="danger"
+                      size="sm"
+                      onClick={() => {
+                        axios
+                          .delete(`/api/items/${item._id}`, tokenConfig(token))
+                          .then((res) => {
+                            dispatch({ type: "DELETE_ITEM", id: item._id });
+                          })
+                          .catch((err) => {
+                            dispatch(
+                              returnErrors(
+                                err.response.data,
+                                err.response.status
+                              )
+                            );
+                          });
+                      }}
+                    >
+                      &times;
+                    </Button>
+                  ) : null}
                   {item.name}
                 </ListGroupItem>
               </CSSTransition>

@@ -11,6 +11,7 @@ import axios from "axios";
 import { returnErrors } from "./actions/errorActions";
 import { useSelector } from "react-redux";
 const App = () => {
+  const token = useSelector((state) => state.auth.token);
   const tokenConfig = () => {
     dispatch({ type: "USER_LOADING" });
     //GET TOKEN FROM LOCAL STORAGE
@@ -26,7 +27,7 @@ const App = () => {
     return config;
   };
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.token);
+
   const loadUser = () => {
     axios
       .get("/api/auth/user", tokenConfig(token))

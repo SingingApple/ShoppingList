@@ -15,3 +15,16 @@ export const logout = () => {
     type: "LOGOUT_SUCCESS",
   };
 };
+
+export const login = ({ email, password }) => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  const body = JSON.stringify({ email, password });
+  return {
+    config,
+    body,
+  };
+};
