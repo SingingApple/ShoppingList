@@ -29,7 +29,10 @@ router.post("/", (req, res) => {
         { expiresIn: 3600 },
         (err, token) => {
           if (err) throw err;
-          res.json({ user: { id: user._id, name: user.name }, token });
+          res.json({
+            user: { id: user._id, name: user.name, email: user.email },
+            token,
+          });
         }
       );
     });

@@ -25,7 +25,9 @@ router.post("/", (req, res) => {
       email,
       password,
     });
-
+    if (!name || !email || !password) {
+      return res.status(401).json({ msg: "Fill all fields" });
+    }
     // USING BCRYPT
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -40,7 +42,7 @@ router.post("/", (req, res) => {
             { expiresIn: 3600 },
             (err, token) => {
               if (err) throw err;
-              res.json({ name: `${user.name} created`, token });
+              res.json({ user, token });
             }
           );
         });

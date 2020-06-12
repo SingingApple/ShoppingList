@@ -10,6 +10,8 @@ import {
   NavLink,
   Container,
 } from "reactstrap";
+import RegisterModal from "./Auth/RegisterModal";
+import Logout from "./Auth/Logout";
 
 const AppNavbar = () => {
   const [toggle, setToggle] = useState(false);
@@ -23,7 +25,10 @@ const AppNavbar = () => {
           <Collapse isOpen={toggle} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="https://github.com/SingingApple">Github</NavLink>
+                <RegisterModal></RegisterModal>
+              </NavItem>
+              <NavItem>
+                <Logout></Logout>
               </NavItem>
             </Nav>
           </Collapse>
